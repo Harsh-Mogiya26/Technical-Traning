@@ -1,0 +1,147 @@
+Program 1: Struct for Employee Details
+--------------------------------------
+#include <stdio.h>
+struct Employee { char name[20]; int id; float salary; };
+int main() {
+    struct Employee e[3] = {{"John",1,5000},{"Amit",2,6000},{"Sara",3,7000}};
+    for(int i=0;i<3;i++) printf("%s %d %.2f\n", e[i].name, e[i].id, e[i].salary);
+}
+
+Program 2: Union (int or float)
+-------------------------------
+#include <stdio.h>
+union Data { int i; float f; };
+int main() {
+    union Data d; d.i=10; printf("Int: %d\n", d.i);
+    d.f=5.5; printf("Float: %.1f\n", d.f);
+}
+
+Program 3: Pointer Swap
+-----------------------
+#include <stdio.h>
+void swap(int *a,int *b){int t=*a;*a=*b;*b=t;}
+int main(){int x=5,y=9;swap(&x,&y);printf("%d %d",x,y);}
+
+Program 4: Double Pointer (Dynamic 2D Array)
+--------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+int main(){
+ int r=2,c=3,**a;
+ a=malloc(r*sizeof(int*));
+ for(int i=0;i<r;i++) a[i]=malloc(c*sizeof(int));
+ for(int i=0;i<r;i++)for(int j=0;j<c;j++) a[i][j]=i+j;
+ for(int i=0;i<r;i++){for(int j=0;j<c;j++)printf("%d ",a[i][j]);printf("\n");}
+}
+
+Program 5: Call by Value Swap (Fails)
+-------------------------------------
+#include <stdio.h>
+void swap(int a,int b){int t=a;a=b;b=t;}
+int main(){int x=3,y=7;swap(x,y);printf("%d %d",x,y);}
+
+Program 6: Call by Reference Swap
+---------------------------------
+#include <stdio.h>
+void swap(int *a,int *b){int t=*a;*a=*b;*b=t;}
+int main(){int x=3,y=7;swap(&x,&y);printf("%d %d",x,y);}
+
+Program 7: Nested Function Simulation
+-------------------------------------
+#include <stdio.h>
+int add(int a,int b){return a+b;}
+void helper(int (*f)(int,int)){printf("%d",f(2,3));}
+int main(){helper(add);}
+
+Program 8: Max Value in Array
+-----------------------------
+#include <stdio.h>
+int max(int a[],int n){int m=a[0];for(int i=1;i<n;i++)if(a[i]>m)m=a[i];return m;}
+int main(){int a[]={2,8,5,9};printf("%d",max(a,4));}
+
+Program 9: Pointer Modifying Variable
+-------------------------------------
+#include <stdio.h>
+void modify(int *p){*p+=5;}
+int main(){int x=10;modify(&x);printf("%d",x);}
+
+Program 10: Struct with Pointer Function
+----------------------------------------
+#include <stdio.h>
+struct Box{int *ptr;};
+void change(struct Box *b){*b->ptr=99;}
+int main(){int x=5;struct Box b={&x};change(&b);printf("%d",x);}
+
+Program 11: Pointer Arithmetic in Array
+---------------------------------------
+#include <stdio.h>
+int main(){int a[]={1,2,3,4};int *p=a;for(int i=0;i<4;i++)printf("%d ",*(p+i));}
+
+Program 12: Dynamic Struct for Books
+------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+struct Book{char title[20],author[20];float price;};
+int main(){
+ struct Book *b=malloc(5*sizeof(struct Book));
+ for(int i=0;i<5;i++)scanf("%s%s%f",b[i].title,b[i].author,&b[i].price);
+ for(int i=0;i<5;i++)printf("%s %s %.2f\n",b[i].title,b[i].author,b[i].price);
+}
+
+Program 13: Pointer to Largest Element
+--------------------------------------
+#include <stdio.h>
+int* largest(int a[],int n){int *m=a;for(int i=1;i<n;i++)if(a[i]>*m)m=&a[i];return m;}
+int main(){int a[]={1,5,9,3};printf("%d",*largest(a,4));}
+
+Program 14: Array of Pointers to Strings
+----------------------------------------
+#include <stdio.h>
+int main(){char names[5][20];char *p[5];for(int i=0;i<5;i++){scanf("%s",names[i]);p[i]=names[i];}
+for(int i=0;i<5;i++)printf("%s\n",p[i]);}
+
+Program 15: Pointer to Struct (Car)
+-----------------------------------
+#include <stdio.h>
+struct Car{char model[20];int year;float price;};
+int main(){struct Car c={"i20",2020,500000},*p=&c;p->price=550000;printf("%s %d %.2f",p->model,p->year,p->price);}
+
+Program 16: Struct Containing Union
+-----------------------------------
+#include <stdio.h>
+struct A{int type;union{int i;float f;}u;};
+int main(){struct A a;a.type=1;a.u.i=10;printf("%d\n",a.u.i);a.u.f=5.5;printf("%.1f",a.u.f);}
+
+Program 17: Function Pointer (Arithmetic)
+-----------------------------------------
+#include <stdio.h>
+int add(int a,int b){return a+b;}
+int sub(int a,int b){return a-b;}
+int mul(int a,int b){return a*b;}
+int main(){
+ int x=4,y=2,op;int (*f[])(int,int)={add,sub,mul};
+ printf("0:Add 1:Sub 2:Mul ");scanf("%d",&op);
+ printf("%d",f[op](x,y));
+}
+
+Program 18: Sum of 2D Array
+----------------------------
+#include <stdio.h>
+int sum(int a[2][2]){int s=0;for(int i=0;i<2;i++)for(int j=0;j<2;j++)s+=a[i][j];return s;}
+int main(){int a[2][2]={{1,2},{3,4}};printf("%d",sum(a));}
+
+Program 19: Recursive Factorial with Pointer
+--------------------------------------------
+#include <stdio.h>
+void fact(int n,long *res){if(n<=1)*res=1;else{fact(n-1,res);*res*=n;}}
+int main(){long r;fact(5,&r);printf("%ld",r);}
+
+Program 20: Sort Students by Marks
+----------------------------------
+#include <stdio.h>
+struct Student{char name[20];int marks;};
+int main(){
+ struct Student s[3]={{"A",85},{"B",92},{"C",78}},t;
+ for(int i=0;i<3;i++)for(int j=i+1;j<3;j++)if(s[i].marks<s[j].marks){t=s[i];s[i]=s[j];s[j]=t;}
+ for(int i=0;i<3;i++)printf("%s %d\n",s[i].name,s[i].marks);
+}
