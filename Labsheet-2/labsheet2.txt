@@ -1,0 +1,283 @@
+
+==============================
+1. Linear Search with Count
+==============================
+#include <stdio.h>
+int main() {
+    int n, x, c = 0;
+    printf("Enter size: "); scanf("%d", &n);
+    int a[n];
+    for(int i=0;i<n;i++) scanf("%d",&a[i]);
+    printf("Enter number: "); scanf("%d",&x);
+    for(int i=0;i<n;i++) if(a[i]==x){ printf("Found at %d\n",i); c++; }
+    printf("Count = %d\n",c);
+}
+
+==============================
+2. Binary Search (Iterative)
+==============================
+#include <stdio.h>
+int main(){
+    int n,x,l=0,h,m,a[100];
+    printf("Enter size: "); scanf("%d",&n);
+    for(int i=0;i<n;i++) scanf("%d",&a[i]);
+    printf("Enter number: "); scanf("%d",&x);
+    h=n-1;
+    while(l<=h){
+        m=(l+h)/2;
+        printf("L=%d H=%d M=%d\n",l,h,m);
+        if(a[m]==x){ printf("Found at %d\n",m); return 0; }
+        if(a[m]<x) l=m+1; else h=m-1;
+    }
+    printf("Not found\n");
+}
+
+==============================
+3. Jump Search vs Linear Search
+==============================
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+int jumpSearch(int a[], int n, int x){
+    int step = sqrt(n), prev = 0;
+    while(a[(step<n?step:n)-1]<x){ prev=step; step+=sqrt(n); if(prev>=n) return -1; }
+    for(int i=prev;i<step && i<n;i++) if(a[i]==x) return i;
+    return -1;
+}
+int linSearch(int a[], int n, int x){ for(int i=0;i<n;i++) if(a[i]==x) return i; return -1; }
+int main(){
+    int n=10000,a[n]; for(int i=0;i<n;i++) a[i]=i; int x=9999;
+    clock_t t=clock(); linSearch(a,n,x); printf("Linear: %.5f\n",(double)(clock()-t)/CLOCKS_PER_SEC);
+    t=clock(); jumpSearch(a,n,x); printf("Jump: %.5f\n",(double)(clock()-t)/CLOCKS_PER_SEC);
+}
+
+==============================
+4. Interpolation vs Binary Search
+==============================
+#include <stdio.h>
+int interp(int a[],int n,int x){
+    int low=0,high=n-1,steps=0;
+    while(low<=high && x>=a[low]&&x<=a[high]){
+        steps++;
+        int pos=low+((x-a[low])*(high-low))/(a[high]-a[low]);
+        if(a[pos]==x) return steps;
+        if(a[pos]<x) low=pos+1; else high=pos-1;
+    } return steps;
+}
+int bin(int a[],int n,int x){
+    int l=0,h=n-1,m,steps=0;
+    while(l<=h){ steps++; m=(l+h)/2;
+        if(a[m]==x) return steps;
+        if(a[m]<x) l=m+1; else h=m-1;
+    } return steps;
+}
+int main(){
+    int a[100]; for(int i=0;i<100;i++) a[i]=i;
+    int x=73;
+    printf("Interpolation Steps=%d\n",interp(a,100,x));
+    printf("Binary Steps=%d\n",bin(a,100,x));
+}
+
+==============================
+5. Exponential Search
+==============================
+#include <stdio.h>
+int binary(int a[],int l,int h,int x){
+    while(l<=h){
+        int m=(l+h)/2;
+        if(a[m]==x) return m;
+        if(a[m]<x) l=m+1; else h=m-1;
+    } return -1;
+}
+int main(){
+    int a[1000]; for(int i=0;i<1000;i++) a[i]=i;
+    int x=789,i=1;
+    while(i<1000 && a[i]<=x) i*=2;
+    int idx=binary(a,i/2,i<1000?i:999,x);
+    printf("Found at %d\n",idx);
+}
+
+==============================
+6. Bubble Sort with Optimization
+==============================
+#include <stdio.h>
+int main(){
+    int a[]={5,3,2,4,1},n=5,pass=0;
+    for(int i=0;i<n-1;i++){
+        for(int j=0;j<n-i-1;j++) if(a[j]>a[j+1]){
+            int t=a[j];a[j]=a[j+1];a[j+1]=t;
+        } pass++;
+    }
+    printf("Normal passes=%d\n",pass);
+    int b[]={5,3,2,4,1},flag;
+    pass=0;
+    for(int i=0;i<n-1;i++){
+        flag=0;
+        for(int j=0;j<n-i-1;j++) if(b[j]>b[j+1]){
+            int t=b[j];b[j]=b[j+1];b[j+1]=t;flag=1;
+        }
+        pass++; if(!flag) break;
+    }
+    printf("Optimized passes=%d\n",pass);
+}
+
+==============================
+7. Selection Sort and Stability Check
+==============================
+#include <stdio.h>
+struct S{int roll,marks;};
+int main(){
+    struct S s[]={{1,80},{2,70},{3,80}},t; int n=3;
+    for(int i=0;i<n-1;i++){
+        int m=i;
+        for(int j=i+1;j<n;j++) if(s[j].marks<s[m].marks) m=j;
+        t=s[i]; s[i]=s[m]; s[m]=t;
+    }
+    for(int i=0;i<n;i++) printf("%d %d\n",s[i].roll,s[i].marks);
+    printf("Note: Selection sort is NOT stable.\n");
+}
+
+==============================
+8. Insertion Sort with Playing Card Analogy
+==============================
+#include <stdio.h>
+int main(){
+    int a[]={5,2,4,6,1,3},n=6;
+    for(int i=1;i<n;i++){
+        int key=a[i],j=i-1;
+        while(j>=0 && a[j]>key){ a[j+1]=a[j]; j--; }
+        a[j+1]=key;
+        printf("Step %d: ",i);
+        for(int k=0;k<n;k++) printf("%d ",a[k]);
+        printf("\n");
+    }
+}
+
+==============================
+9. Merge Sort with Divide-and-Conquer
+==============================
+#include <stdio.h>
+void merge(int a[],int l,int m,int r){
+    printf("Merging %d-%d and %d-%d\n",l,m,m+1,r);
+    int n1=m-l+1,n2=r-m,L[n1],R[n2];
+    for(int i=0;i<n1;i++)L[i]=a[l+i];
+    for(int j=0;j<n2;j++)R[j]=a[m+1+j];
+    int i=0,j=0,k=l;
+    while(i<n1&&j<n2)a[k++]=(L[i]<=R[j])?L[i++]:R[j++];
+    while(i<n1)a[k++]=L[i++];
+    while(j<n2)a[k++]=R[j++];
+}
+void sort(int a[],int l,int r){
+    if(l<r){int m=(l+r)/2;sort(a,l,m);sort(a,m+1,r);merge(a,l,m,r);}
+}
+int main(){int a[]={5,2,4,6,1,3};sort(a,0,5);}
+
+==============================
+10. Quick Sort and Worst-Case Comparison
+==============================
+#include <stdio.h>
+int cmp=0;
+int part(int a[],int l,int h){
+    int p=a[l],i=l,j=h;
+    while(i<j){
+        while(a[i]<=p)i++,cmp++;
+        while(a[j]>p)j--,cmp++;
+        if(i<j){int t=a[i];a[i]=a[j];a[j]=t;}
+    }
+    a[l]=a[j];a[j]=p;
+    return j;
+}
+void quick(int a[],int l,int h){
+    if(l<h){int p=part(a,l,h);quick(a,l,p-1);quick(a,p+1,h);}
+}
+int main(){
+    int a[]={5,3,8,2,1},n=5;quick(a,0,n-1);printf("Comparisons=%d\n",cmp);
+}
+
+==============================
+11. Fixed-Size Stack – Function Call Simulation
+==============================
+#include <stdio.h>
+#define SIZE 5
+int s[SIZE],top=-1;
+void push(int x){ if(top==SIZE-1) printf("Overflow\n"); else s[++top]=x; }
+void pop(){ if(top==-1) printf("Underflow\n"); else top--; }
+void show(){ for(int i=top;i>=0;i--) printf("%d ",s[i]); printf("\n"); }
+int main(){
+    push(10);push(20);show();
+    pop();show();pop();pop();
+}
+
+==============================
+12. Dynamic Stack – Browser History Tracker
+==============================
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Node{char url[50];struct Node*next;};
+struct Node*top=NULL;
+void push(char*u){struct Node*t=malloc(sizeof(struct Node));strcpy(t->url,u);t->next=top;top=t;}
+void pop(){if(!top)printf("No more history\n");else{printf("Back from %s\n",top->url);top=top->next;}}
+void show(){struct Node*t=top;while(t){printf("%s -> ",t->url);t=t->next;}printf("NULL\n");}
+int main(){
+    push("A.com");push("B.com");show();pop();show();pop();pop();
+}
+
+==============================
+13. Circular Buffer Stack
+==============================
+#include <stdio.h>
+#define N 5
+int s[N],top=-1;
+void push(int x){top=(top+1)%N; s[top]=x; printf("Pushed %d (top=%d)\n",x,top);}
+void show(){for(int i=0;i<N;i++) printf("%d ",s[i]); printf("\n");}
+int main(){
+    for(int i=1;i<=7;i++){push(i);show();}
+}
+
+==============================
+14. Priority Stack – Task Scheduler
+==============================
+#include <stdio.h>
+struct T{char name[20];int pr;};
+struct T s[10];int top=-1;
+void push(struct T t){s[++top]=t;}
+void pop(){
+    if(top==-1){printf("Empty\n");return;}
+    int hp=0;for(int i=1;i<=top;i++)if(s[i].pr>s[hp].pr)hp=i;
+    printf("Executing %s (p=%d)\n",s[hp].name,s[hp].pr);
+    for(int i=hp;i<top;i++)s[i]=s[i+1];top--;
+}
+int main(){
+    push((struct T){"A",1});push((struct T){"B",3});push((struct T){"C",2});
+    pop();pop();pop();
+}
+
+==============================
+15. Undo Stack – Text Editor Feature
+==============================
+#include <stdio.h>
+#include <string.h>
+#define N 5
+char s[N][100]; int top=-1;
+void save(char *text){ if(top<N-1) strcpy(s[++top],text); else printf("No space\n"); }
+void undo(){ if(top==-1) printf("Nothing to undo\n"); else printf("Undo: %s\n",s[top--]); }
+int main(){
+    save("Hello"); save("Hello World"); undo(); undo(); undo();
+}
+
+==============================
+16. Double Stack – Two Stacks in One Array
+==============================
+#include <stdio.h>
+#define N 10
+int s[N],top1=-1,top2=N;
+void push1(int x){ if(top1+1==top2) printf("Overflow\n"); else s[++top1]=x; }
+void push2(int x){ if(top2-1==top1) printf("Overflow\n"); else s[--top2]=x; }
+void pop1(){ if(top1==-1) printf("Underflow1\n"); else top1--; }
+void pop2(){ if(top2==N) printf("Underflow2\n"); else top2++; }
+void show(){printf("Stack1: ");for(int i=0;i<=top1;i++)printf("%d ",s[i]);
+    printf("\nStack2: ");for(int i=N-1;i>=top2;i--)printf("%d ",s[i]);printf("\n");}
+int main(){
+    push1(1);push2(9);show();push1(2);push2(8);show();
+}
