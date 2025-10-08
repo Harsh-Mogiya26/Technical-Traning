@@ -1,0 +1,104 @@
+1. Hello, World!
+
+print("Hello, World!")
+
+2. Print multiple values
+
+print("Python", "is", "fun!")
+
+3. Arithmetic operations
+
+a, b = 10, 3 print(a+b, a-b, a*b, a/b, a%b, a**b)
+
+4. Odd or Even
+
+n = int(input("Enter number: ")) print("Even" if n % 2 == 0 else "Odd")
+
+5. Positive, Negative, or Zero
+
+n = int(input("Enter number: ")) if n > 0: print("Positive") elif n < 0: print("Negative") else: print("Zero")
+
+6. Leap Year
+
+y = int(input("Enter year: ")) print("Leap Year" if (y%4==0 and y%100!=0) or y%400==0 else "Not Leap Year")
+
+7. Numbers 1 to N
+
+n = int(input("Enter N: ")) for i in range(1, n+1): print(i, end=" ")
+
+8. Squares of 0 to N-1
+
+n = int(input("Enter N: ")) for i in range(n): print(i**2)
+
+9. Reverse a Number
+
+n = int(input("Enter number: ")) rev = 0 while n: rev = rev*10 + n%10 n //= 10 print(rev)
+
+10. Factorial Function
+
+def fact(n): return 1 if n==0 else n*fact(n-1) print(fact(int(input("Enter number: "))))
+
+11. Prime Check
+
+def is_prime(n): if n<2: return False for i in range(2, int(n**0.5)+1): if n%i==0: return False return True print(is_prime(int(input("Enter number: "))))
+
+12. Fibonacci Sequence
+
+def fib(n): a,b=0,1 for _ in range(n): print(a, end=" ") a,b=b,a+b fib(int(input("Enter terms: ")))
+
+13. List Operations
+
+lst=[3,1,2] lst.append(4); lst.insert(1,5); lst.remove(3); lst.sort() print(lst)
+
+14. List Comprehension
+
+print([x**2 for x in range(10) if x%2==0])
+
+15. Tuple Immutability
+
+t = (1,2,3)
+
+t[0] = 10  # Error: immutable
+
+print(t)
+
+16. Remove Duplicates
+
+lst = [1,2,2,3,3,4] print(list(set(lst)))
+
+17. Dictionary Operations
+
+d = {"a":1, "b":2} d["c"]=3 print(d["a"], d.keys(), d.values())
+
+18. Count Vowels
+
+s = input("Enter string: ").lower() print(sum(c in 'aeiou' for c in s))
+
+19. Reverse String
+
+s = input("Enter string: ") print(s[::-1])
+
+20. Palindrome Check
+
+s = input("Enter string: ") print("Palindrome" if s==s[::-1] else "Not Palindrome")
+
+21. f-string Formatting
+
+name, age = "Harsh", 20 print(f"My name is {name} and I am {age} years old.")
+
+22. itertools.product()
+
+import itertools print(list(itertools.product([1,2], ['a','b'])))
+
+23. collections.Counter()
+
+from collections import Counter print(Counter("banana"))
+
+24. datetime Formatting
+
+from datetime import datetime d = datetime.strptime("2025-10-08", "%Y-%m-%d") print(d.strftime("%d %B, %Y"))
+
+25. Email Validation (Regex)
+
+import re email = input("Enter email: ") print("Valid" if re.match(r'^[\w.-]+@[\w.-]+.\w+$', email) else "Invalid")
+
